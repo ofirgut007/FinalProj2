@@ -15,6 +15,8 @@ node ("master") {
 				// Run the maven build
 				if (isUnix()) {
 					sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore  -DskipTests clean package"
+                    sh "'${mvnHome}/bin/mvn' versions:set versions:commit -DnewVersion=ofir_${env.BUILD_NUMBER}"
+					//sh "git push ${pom.artifactId}-${version}"
 				} else {
 					bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore -DskipTests clean package/)
 				}
