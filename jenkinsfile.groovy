@@ -9,17 +9,22 @@ node {
       mvnHome = tool 'm1'
    }
    stage('Build') {
+     dir ('spring-boot-package-war') {
       // Run the maven build
       if (isUnix()) {
          sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore  -DskipTests clean package"
       } else {
          bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore -DskipTests clean package/)
       }
+     }
    }
    stage('Tests') {
+    dir ('spring-boot-package-war') {
+
       sh "'${mvnHome}/bin/mvn' test"
       junit '**/target/surefire-reports/TEST-*.xml'
       archive 'target/*.jar'
+    }
    }
    stage('Deploy') {
         sh "echo test"
