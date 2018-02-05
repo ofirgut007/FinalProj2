@@ -33,14 +33,18 @@ node ("master") {
 		}
    }
    stage('Deploy') {
-		sh "echo test"
-		//def dockerimage = docker.build "spring-boot-package-war:${env.version}"
-		//def dockerimage = docker.build "spring-boot-package-war:${env.BUILD_NUMBER}"
-		//dockerimage.push()
+		sh "echo Deploy steps"
+		//def dockerimage = docker.build "ofirgut007/spring-boot-package-war:${env.BUILD_NUMBER}"
+		// docker pull hello-world
+		// docker tag hello-world ofirgut007/hello-world
+		// docker login --username=ofirgut007 --password=**
+		// docker commit -m "added spring" -a "NAME" hello-world ofirgut007/myspringimage:latest
+		// docker push ofirgut007/myspringimage
+		// dockerimage.push()
     }
     stage('Run') {
 		try {
-
+			docker.image("ofirgut007/spring-boot-package-war:${env.BUILD_NUMBER}").run('-p 8080:8080') 
 		} catch (error) {
 
 		} finally {
