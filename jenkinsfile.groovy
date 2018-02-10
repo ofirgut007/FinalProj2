@@ -17,26 +17,26 @@ node ("master") {
 			dir ('spring-boot-package-war') {
 				// Run the maven build
 				if (isUnix()) {
-                    sh "'${mvnHome}/bin/mvn' versions:set versions:commit -DnewVersion=ofir_${env.BUILD_NUMBER}"
+					sh "'${mvnHome}/bin/mvn' versions:set versions:commit -DnewVersion=ofir_${env.BUILD_NUMBER}"
 					sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore  -DskipTests clean package"
 					//sh "git push ${pom.artifactId}-${version}"
 				} else {
-				    bat(/"${mvnHome}\bin\mvn" versions:set versions:commit -DnewVersion=ofir_${env.BUILD_NUMBER}/)
+					bat(/"${mvnHome}\bin\mvn" versions:set versions:commit -DnewVersion=ofir_${env.BUILD_NUMBER}/)
 					bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore -DskipTests clean package/)
 				}
 			}
 			} catch (exc) {
 				error "ERROR: Failed to package maven"   
 			}
-   }
-   stage('Tests') {
+	}
+	stage('Tests') {
 		dir ('spring-boot-package-war') {
 			sh "'${mvnHome}/bin/mvn' test"
 			junit '**/target/surefire-reports/TEST-*.xml'
 			archive 'target/*.jar'
 		}
-   }
-   stage('Deploy') {
+	}
+	stage('Deploy') {
 		sh "echo $dockerHome"
 		//def dockerimage = docker.build "ofirgut007/spring-boot-package-war:${env.BUILD_NUMBER}"
 		// sh "'${mvnHome}/bin/docker' pull hello-world"
@@ -45,8 +45,8 @@ node ("master") {
 		// sh "'${mvnHome}/bin/docker' commit -m "added spring" -a "NAME" hello-world ofirgut007/myspringimage:latest
 		// sh "'${mvnHome}/bin/docker' push ofirgut007/myspringimage
 		// dockerimage.push()
-    }
-    stage('Run') {
+	}
+	stage('Run') {
 		try {
 			//docker.image("ofirgut007/spring-boot-package-war:${env.BUILD_NUMBER}").run('-p 8080:8080') 
 		} catch (error) {
@@ -54,38 +54,34 @@ node ("master") {
 		} finally {
 		 
 		}
-    }
-    stage ('Final') {
+	}
+	stage ('Final') {
 		notifySlack(currentBuild.result)
 
-    }
+	}
 }
 def notifySlack(String buildStatus = 'STARTED') {
-	    // Build status of null means success.
-	    buildStatus = buildStatus ?: 'SUCCESS'
-
-	    def color
-
-	    if (buildStatus == 'STARTED') {
+		// Build status of null means success.
+		buildStatus = buildStatus ?: 'SUCCESS'
+		def color
+		if (buildStatus == 'STARTED') {
 			color = '#D4DADF'
-	    } else if (buildStatus == 'SUCCESS') {
+		} else if (buildStatus == 'SUCCESS') {
 			color = '#BDFFC3'
-	    } else if (buildStatus == 'UNSTABLE') {
+		} else if (buildStatus == 'UNSTABLE') {
 			color = '#FFFE89'
-	    } else {
+		} else {
 			color = '#FF9FA1'
-	    }
-
-	    def msg = "${buildStatus}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
-
-	    slackSend(color: color, message: msg)
+		}
+		def msg = "${buildStatus}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
+		slackSend(color: color, message: msg)
 }
 def deploymentOk(){
-         def workspacePath = pwd()
-         expectedCommitid = new File("${workspacePath}/envversion.txt").text.trim()
-         //actualCommitid = readCommitidFromJson()
-         println "expected version from txt: ${expectedCommitid}"
-         //println "actual version from json: ${actualCommitid}"
-         //return expectedCommitid == actualCommitid
-	 return 1
+		def workspacePath = pwd()
+		expectedCommitid = new File("${workspacePath}/envversion.txt").text.trim()
+		//actualCommitid = readCommitidFromJson()
+		println "expected version from txt: ${expectedCommitid}"
+		//println "actual version from json: ${actualCommitid}"
+		//return expectedCommitid == actualCommitid
+		return 1
 }
