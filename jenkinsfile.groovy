@@ -38,17 +38,16 @@ node ("master") {
 	}
 	stage('Deploy') {
 		sh "echo $dockerHome"
-		//def dockerimage = docker.build "ofirgut007/spring-boot-package-war:${env.BUILD_NUMBER}"
-		// sh "'${mvnHome}/bin/docker' pull hello-world"
-		// sh "'${mvnHome}/bin/docker' tag hello-world ofirgut007/hello-world
-		// sh "'${mvnHome}/bin/docker' login --username=ofirgut007 --password=**
-		// sh "'${mvnHome}/bin/docker' commit -m "added spring" -a "NAME" hello-world ofirgut007/myspringimage:latest
-		// sh "'${mvnHome}/bin/docker' push ofirgut007/myspringimage
-		// dockerimage.push()
+		def dockerimage = docker.build "ofirgut007/spring-boot-package-war:${env.BUILD_NUMBER}"
+		// sh "'${dockerHome}/bin/docker' tag hello-world ofirgut007/hello-world
+		sh "docker login --username=ofirgut007 --password=***"
+		//sh "docker commit -m 'added spring' -a 'Ofir Gutmacher' ofirgut007/spring-boot-package-war:${env.BUILD_NUMBER} ofirgut007/myspringimage:latest"
+		// sh "'${dockerHome}/bin/docker' push ofirgut007/myspringimage:latest
+		dockerimage.push('latest')
 	}
 	stage('Run') {
 		try {
-			//docker.image("ofirgut007/spring-boot-package-war:${env.BUILD_NUMBER}").run('-p 8080:8080') 
+			docker.image("ofirgut007/spring-boot-package-war:latest").run('-it -p 8082:8082') 
 		} catch (error) {
 
 		} finally {

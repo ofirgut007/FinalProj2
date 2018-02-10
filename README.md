@@ -5,7 +5,7 @@
 
    1.1. Choose ```t2.small``` as the type
   
-   1.2. Set the tags with : name = JENKINS
+   1.2. Set the tags with : Name = JENKINS
   
    1.3. Create a key.pem and share it with your team members
   
@@ -29,7 +29,7 @@
   
    3.2. setup a github new repository called **FinalProject**
   
-   3.3. Fork the Sprinboot from lidorlg github account
+   3.3. Fork the Springboot from lidorlg github account
 4. Jenkins setup
   
    4.1. install all default plugins
@@ -58,7 +58,7 @@
 		
    4.4. Configure all of the plug-ins
     
-	    - Docker will point to the local installation
+	    - Docker will point to the local installation (leave the path empty)
 		
 		- Slack notifier parameters to our slack channel : https://devops35640workspace.slack.com/services/
 		
@@ -66,9 +66,8 @@
 	
 5. Docker setup
   
-   5.1.
+   5.1. In the pipeline, make sure you use the docker and maven as tools.
   
-   5.2.
   
 6. Job Setup
 
@@ -87,6 +86,10 @@
    6.7. Change to the "spring-boot-examples/spring-boot-package-war/" repository
    
    6.8. increment the version
+   
+   6.9. create a docker image
+   
+   6.10 run the image
 
    
 
