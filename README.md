@@ -54,12 +54,13 @@
 		- pipeline shared groovy libraries
 		- purge job history
 		- workspace cleanup
+		- pipeline utility steps
 		
-   4.1. Configure all of the plug-ins
+   4.4. Configure all of the plug-ins
     
 	    - Docker will point to the local installation
 		
-		- Slack notifier parameters to our slack channel
+		- Slack notifier parameters to our slack channel : https://devops35640workspace.slack.com/services/
 		
 		- Maven will be installed automatically
 	
@@ -67,8 +68,26 @@
   
    5.1.
   
-   5.1.
+   5.2.
   
 6. Job Setup
+
+   6.1. Login to Jenkins
+   
+   6.2. Create a new pipeline Job
+   
+   6.3. Mark "Github Project" and give it the FinalProject URL
+   
+   6.4. In Poll SCM, put "* * * * *", so that it will scan for github triggers 24/7. 
+   
+   6.5. In Pipeline, create a pipeline file. choose the  maven-git sample, and start working on it.
+   
+   6.6. add all the job steps.
+   
+   6.7. Change to the "spring-boot-examples/spring-boot-package-war/" repository
+   
+   6.8. increment the version
+
+   
 
   
